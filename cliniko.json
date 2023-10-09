@@ -154,7 +154,7 @@
           },
           "deposit_price": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "minimum": 0,
             "maximum": 4000000000,
             "exclusiveMaximum": true,
@@ -691,7 +691,7 @@
           },
           "price": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "minimum": -4000000000,
             "maximum": 4000000000,
             "exclusiveMaximum": true
@@ -992,7 +992,7 @@
           },
           "price": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "minimum": -4000000000,
             "maximum": 4000000000,
             "exclusiveMaximum": true,
@@ -2277,7 +2277,7 @@
           },
           "discounted_amount": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "nullable": true
           },
           "id": {
@@ -2321,7 +2321,7 @@
           },
           "net_amount": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "nullable": true
           },
           "notes": {
@@ -2393,12 +2393,12 @@
           },
           "tax_amount": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "nullable": true
           },
           "total_amount": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "nullable": true
           },
           "updated_at": {
@@ -2461,7 +2461,7 @@
           },
           "discounted_amount": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "nullable": true
           },
           "id": {
@@ -2505,7 +2505,7 @@
           },
           "net_price": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "nullable": true
           },
           "product": {
@@ -2548,7 +2548,7 @@
           },
           "unit_price": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "minimum": -4000000000,
             "maximum": 4000000000,
             "exclusiveMaximum": true
@@ -3450,7 +3450,7 @@
           },
           "max_invoiceable_amount": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "minimum": 0,
             "exclusiveMinimum": true,
             "nullable": true
@@ -4149,7 +4149,7 @@
           },
           "cost_price": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "minimum": 0,
             "maximum": 4000000000,
             "exclusiveMaximum": true,
@@ -4191,12 +4191,12 @@
           },
           "price_ex_tax": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "nullable": true
           },
           "price_including_tax": {
             "type": "string",
-            "format": "decimal",
+            "format": "float",
             "nullable": true
           },
           "product_supplier": {
@@ -7637,6 +7637,7 @@
     "requestBodies": {
       "AppointmentType": {
         "required": true,
+        "x-go-name": "AppointmentTypeRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -7662,7 +7663,7 @@
                 },
                 "deposit_price": {
                   "type": "string",
-                  "format": "decimal",
+                  "format": "float",
                   "minimum": 0,
                   "maximum": 4000000000,
                   "exclusiveMaximum": true,
@@ -7780,6 +7781,7 @@
       },
       "Attendee": {
         "required": true,
+        "x-go-name": "AttendeeRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -7818,6 +7820,7 @@
       },
       "AttendeeCancel": {
         "required": true,
+        "x-go-name": "AttendeeCancelRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -7851,6 +7854,7 @@
       },
       "AttendeeUpdate": {
         "required": true,
+        "x-go-name": "AttendeeUpdateRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -7877,6 +7881,7 @@
       },
       "AvailabilityBlock": {
         "required": true,
+        "x-go-name": "AvailabilityBlockRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -7938,6 +7943,7 @@
       },
       "BillableItem": {
         "required": true,
+        "x-go-name": "BillableItemRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -7962,7 +7968,7 @@
                 },
                 "price": {
                   "type": "string",
-                  "format": "decimal",
+                  "format": "float",
                   "minimum": -4000000000,
                   "maximum": 4000000000,
                   "exclusiveMaximum": true
@@ -7980,6 +7986,7 @@
       },
       "Business": {
         "required": true,
+        "x-go-name": "BusinessRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -8095,6 +8102,7 @@
       },
       "BusinessCreate": {
         "required": true,
+        "x-go-name": "BusinessCreateRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -8210,6 +8218,7 @@
       },
       "ConcessionType": {
         "required": true,
+        "x-go-name": "ConcessionTypeRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -8226,6 +8235,7 @@
       },
       "Contact": {
         "required": true,
+        "x-go-name": "ContactRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -8357,6 +8367,7 @@
       },
       "GroupAppointment": {
         "required": true,
+        "x-go-name": "GroupAppointmentRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -8437,6 +8448,7 @@
       },
       "IndividualAppointment": {
         "required": true,
+        "x-go-name": "IndividualAppointmentRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -8521,6 +8533,7 @@
       },
       "IndividualAppointmentCancel": {
         "required": true,
+        "x-go-name": "IndividualAppointmentCancelRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -8554,6 +8567,7 @@
       },
       "MedicalAlert": {
         "required": true,
+        "x-go-name": "MedicalAlertRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -8577,6 +8591,7 @@
       },
       "Patient": {
         "required": true,
+        "x-go-name": "PatientRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -8933,6 +8948,7 @@
       },
       "PatientCase": {
         "required": true,
+        "x-go-name": "PatientCaseRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -8975,7 +8991,7 @@
                 },
                 "max_invoiceable_amount": {
                   "type": "string",
-                  "format": "decimal",
+                  "format": "float",
                   "minimum": 0,
                   "exclusiveMinimum": true,
                   "nullable": true
@@ -9029,6 +9045,7 @@
       },
       "PatientForm": {
         "required": true,
+        "x-go-name": "PatientFormRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9180,6 +9197,7 @@
       },
       "PatientFormTemplate": {
         "required": true,
+        "x-go-name": "PatientFormTemplateRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9291,6 +9309,7 @@
       },
       "PractitionerReferenceNumber": {
         "required": true,
+        "x-go-name": "PractitionerReferenceNumberRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9323,6 +9342,7 @@
       },
       "Product": {
         "required": true,
+        "x-go-name": "ProductRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9344,7 +9364,7 @@
                 },
                 "price": {
                   "type": "number",
-                  "format": "decimal"
+                  "format": "float"
                 },
                 "product_supplier_name": {
                   "type": "string",
@@ -9370,7 +9390,7 @@
                 },
                 "cost_price": {
                   "type": "string",
-                  "format": "decimal",
+                  "format": "float",
                   "minimum": 0,
                   "maximum": 4000000000,
                   "exclusiveMaximum": true,
@@ -9387,6 +9407,7 @@
       },
       "ProductSupplier": {
         "required": true,
+        "x-go-name": "ProductSupplierRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9402,6 +9423,7 @@
       },
       "ProductUpdate": {
         "required": true,
+        "x-go-name": "ProductUpdateRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9423,7 +9445,7 @@
                 },
                 "price": {
                   "type": "number",
-                  "format": "decimal"
+                  "format": "float"
                 },
                 "product_supplier_name": {
                   "type": "string",
@@ -9449,7 +9471,7 @@
                 },
                 "cost_price": {
                   "type": "string",
-                  "format": "decimal",
+                  "format": "float",
                   "minimum": 0,
                   "maximum": 4000000000,
                   "exclusiveMaximum": true,
@@ -9466,6 +9488,7 @@
       },
       "ReferralSource": {
         "required": true,
+        "x-go-name": "ReferralSourceRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9497,6 +9520,7 @@
       },
       "StockAdjustment": {
         "required": true,
+        "x-go-name": "StockAdjustmentRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9536,6 +9560,7 @@
       },
       "Tax": {
         "required": true,
+        "x-go-name": "TaxRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9563,6 +9588,7 @@
       },
       "TreatmentNote": {
         "required": true,
+        "x-go-name": "TreatmentNoteRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9711,6 +9737,7 @@
       },
       "TreatmentNoteTemplate": {
         "required": true,
+        "x-go-name": "TreatmentNoteTemplateRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9833,6 +9860,7 @@
       },
       "UnavailableBlock": {
         "required": true,
+        "x-go-name": "UnavailableBlockRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9898,6 +9926,7 @@
       },
       "UploadedPatientAttachment": {
         "required": true,
+        "x-go-name": "UploadedPatientAttachmentRequest",
         "content": {
           "application/json": {
             "schema": {
@@ -9926,6 +9955,7 @@
         }
       },
       "Relationship": {
+        "x-go-name": "RelationshipRequest",
         "content": {
           "application/json": {
             "schema": {
