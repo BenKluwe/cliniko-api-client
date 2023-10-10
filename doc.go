@@ -1,3 +1,6 @@
+// Use of this source code is governed by the LGPL 2.1
+// license that can be found in the LICENSE file.
+
 /*
 The package cliniko provides the means to interact with the cliniko api
 from golang.
