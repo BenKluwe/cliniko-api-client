@@ -23,12 +23,16 @@ type UploadFileToS3BucketResponse struct {
 	}
 }
 
+// ExtendedClient builds on ClientWithResponsesInterface
+// to provide extended functionality
 type ExtendedClient struct {
 	ClientWithResponsesInterface
 
 	Client *Client
 }
 
+// NewExtendedClient creates a new Extended Client that wraps
+// a ClientWithResponses type for advanced / additional functions
 func NewExtendedClient(
 	server string,
 	opts ...ClientOption,
@@ -44,7 +48,9 @@ func NewExtendedClient(
 		Client:                       client}, nil
 }
 
-func (c *ExtendedClient) NewUploadFileToS3BucketRequest(
+// NewUploadFileToS3BucketPostRequest generates requests
+// for UploadFileToS3Bucket
+func (c *ExtendedClient) NewUploadFileToS3BucketPostRequest(
 	presignedUrl *PresignedPostGetResponse,
 	filename string,
 	fileContent io.Reader,
@@ -106,7 +112,7 @@ func (c *ExtendedClient) UploadFileToS3Bucket(
 ) {
 
 	req, err :=
-		c.NewUploadFileToS3BucketRequest(
+		c.NewUploadFileToS3BucketPostRequest(
 			presignedUrl,
 			filename,
 			fileContent)
@@ -121,6 +127,8 @@ func (c *ExtendedClient) UploadFileToS3Bucket(
 	return c.Client.Client.Do(req)
 }
 
+// ParseUploadFileToS3BucketResponse parses an HTTP response
+// from a CreateAttachment call
 func (c *ExtendedClient) ParseUploadFileToS3BucketResponse(
 	rsp *http.Response,
 ) (
@@ -155,6 +163,13 @@ func (c *ExtendedClient) ParseUploadFileToS3BucketResponse(
 	return response, nil
 }
 
+// CreateAttachment creates a given attachment using
+// a filename and file content and attaches it to the
+// given patient id. This function makes a total of 3 HTTP
+// calls to 1. create a presigned Amazon S3 bucket URL
+// 2. upload the file contents with the given name to
+// the presigned url from 1.
+// and 3. informs the Cliniko API of the new attachment
 func (c *ExtendedClient) CreateAttachment(
 	ctx context.Context,
 	patientId string,
