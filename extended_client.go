@@ -23,6 +23,24 @@ type UploadFileToS3BucketResponse struct {
 	}
 }
 
+// ExtendedClientInterface is the interface specification
+// for the client with extended functionality
+type ExtendedClientInterface interface {
+	CreateAttachment(
+		ctx context.Context,
+		patientId string,
+		description *string,
+		filename string,
+		fileContent io.Reader,
+		reqEditors ...RequestEditorFn,
+	) (
+		*PresignedPostGetResponse,
+		*UploadFileToS3BucketResponse,
+		*CreateUploadedPatientAttachmentPostResponse,
+		error,
+	)
+}
+
 // ExtendedClient builds on ClientWithResponsesInterface
 // to provide extended functionality
 type ExtendedClient struct {
