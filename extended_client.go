@@ -3,6 +3,7 @@ package cliniko
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -23,9 +24,9 @@ type UploadFileToS3BucketResponse struct {
 	}
 }
 
-// ExtendedClientInterface is the interface specification
+// ClinikoClientInterface is the interface specification
 // for the client with extended functionality
-type ExtendedClientInterface interface {
+type ClinikoClientInterface interface {
 	CreateAttachment(
 		ctx context.Context,
 		patientId string,
@@ -41,41 +42,77 @@ type ExtendedClientInterface interface {
 	)
 }
 
-// ExtendedClient builds on ClientWithResponsesInterface
+// ClinikoClient builds on ClientWithResponsesInterface
 // to provide extended functionality
-type ExtendedClient struct {
+type ClinikoClient struct {
 	ClientWithResponsesInterface
 
-	Client *Client
+	Client      *Client
+	token       string
+	vendor      string
+	vendorEmail string
 }
 
-// NewExtendedClient creates a new Extended Client that wraps
+// NewClinikoClient creates a new Extended Client that wraps
 // a ClientWithResponses type for advanced / additional functions
-func NewExtendedClient(
-	server string,
-	opts ...ClientOption,
+func NewClinikoClient(
+	token string,
+	vendor string,
+	vendorEmail string,
 ) (
-	*ExtendedClient, error,
+	*ClinikoClient, error,
 ) {
-	client, err := NewClient(server, opts...)
+	var shard string
+	tokenParts := strings.Split(token, "-")
+	if len(tokenParts) == 1 {
+		shard = "au1"
+	} else {
+		shard = tokenParts[1]
+	}
+
+	client, err := NewClient(
+		fmt.Sprintf("https://api.%s.cliniko.com/v1", shard),
+	)
+
 	if err != nil {
 		return nil, err
 	}
-	return &ExtendedClient{
+
+	ret := &ClinikoClient{
 		ClientWithResponsesInterface: &ClientWithResponses{client},
-		Client:                       client}, nil
+		Client:                       client,
+		vendor:                       vendor,
+		vendorEmail:                  vendorEmail,
+		token: fmt.Sprintf(
+			"Basic: %s",
+			base64.StdEncoding.EncodeToString(
+				[]byte(token+":"),
+			)),
+	}
+
+	client.RequestEditors = append(client.RequestEditors, ret.addClinikoHeaders)
+	return ret, nil
+}
+
+func (c *ClinikoClient) addClinikoHeaders(
+	ctx context.Context,
+	req *http.Request,
+) error {
+	req.Header.Add("Authorization", c.token)
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("User-Agent", fmt.Sprintf("%s (%s)", c.vendor, c.vendorEmail))
+	return nil
 }
 
 // NewUploadFileToS3BucketPostRequest generates requests
 // for UploadFileToS3Bucket
-func (c *ExtendedClient) NewUploadFileToS3BucketPostRequest(
+func (c *ClinikoClient) NewUploadFileToS3BucketPostRequest(
 	presignedUrl *PresignedPostGetResponse,
 	filename string,
 	fileContent io.Reader,
 ) (
 	*http.Request, error,
 ) {
-
 	formFields := map[string]string{
 		"acl":                   string(*presignedUrl.JSON200.Fields.Acl),
 		"key":                   *presignedUrl.JSON200.Fields.Key,
@@ -119,7 +156,7 @@ func (c *ExtendedClient) NewUploadFileToS3BucketPostRequest(
 	return req, nil
 }
 
-func (c *ExtendedClient) UploadFileToS3Bucket(
+func (c *ClinikoClient) UploadFileToS3Bucket(
 	ctx context.Context,
 	presignedUrl *PresignedPostGetResponse,
 	filename string,
@@ -147,7 +184,7 @@ func (c *ExtendedClient) UploadFileToS3Bucket(
 
 // ParseUploadFileToS3BucketResponse parses an HTTP response
 // from a CreateAttachment call
-func (c *ExtendedClient) ParseUploadFileToS3BucketResponse(
+func (c *ClinikoClient) ParseUploadFileToS3BucketResponse(
 	rsp *http.Response,
 ) (
 	*UploadFileToS3BucketResponse, error,
@@ -188,7 +225,7 @@ func (c *ExtendedClient) ParseUploadFileToS3BucketResponse(
 // 2. upload the file contents with the given name to
 // the presigned url from 1.
 // and 3. informs the Cliniko API of the new attachment
-func (c *ExtendedClient) CreateAttachment(
+func (c *ClinikoClient) CreateAttachment(
 	ctx context.Context,
 	patientId string,
 	description *string,
