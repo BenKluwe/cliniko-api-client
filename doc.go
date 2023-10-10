@@ -50,5 +50,4 @@ One special case exists for creating an attachment as this is a multi-step proce
 			bytes.NewReader(contents))
 
 */
-
 package cliniko
