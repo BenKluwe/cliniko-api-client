@@ -13,6 +13,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type UploadFileToS3BucketResponse struct {
@@ -121,10 +122,10 @@ func (c *ClinikoClient) NewUploadFileToS3BucketPostRequest(
 		"key":                   *presignedUrl.JSON200.Fields.Key,
 		"policy":                *presignedUrl.JSON200.Fields.Policy,
 		"success_action_status": string(*presignedUrl.JSON200.Fields.SuccessActionStatus),
-		// "x-amz-date":            presignedUrl.JSON200.Fields.XAmzDate,
-		"x-amz-algorithm":  *presignedUrl.JSON200.Fields.XAmzAlgorithm,
-		"x-amz-credential": *presignedUrl.JSON200.Fields.XAmzCredential,
-		"x-amz-signature":  *presignedUrl.JSON200.Fields.XAmzSignature,
+		"x-amz-date":            time.Now().UTC().Format("20060102T150405Z"),
+		"x-amz-algorithm":       *presignedUrl.JSON200.Fields.XAmzAlgorithm,
+		"x-amz-credential":      *presignedUrl.JSON200.Fields.XAmzCredential,
+		"x-amz-signature":       *presignedUrl.JSON200.Fields.XAmzSignature,
 	}
 
 	var form bytes.Buffer
