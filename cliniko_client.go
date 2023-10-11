@@ -165,24 +165,20 @@ func (c *ClinikoClient) UploadFileToS3Bucket(
 	presignedUrl *PresignedPostGetResponse,
 	filename string,
 	fileContent io.Reader,
-	reqEditors ...RequestEditorFn,
 ) (
 	*http.Response, error,
 ) {
-
 	req, err :=
 		c.NewUploadFileToS3BucketPostRequest(
 			presignedUrl,
 			filename,
-			fileContent)
-
+			fileContent,
+		)
 	if err != nil {
 		return nil, err
 	}
+
 	req = req.WithContext(ctx)
-	if err := c.Client.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
 	return c.Client.Client.Do(req)
 }
 
@@ -258,8 +254,7 @@ func (c *ClinikoClient) CreateAttachment(
 			ctx,
 			presignedUrl,
 			filename,
-			fileContent,
-			reqEditors...)
+			fileContent)
 
 	if err != nil {
 		return nil, nil, nil, err
