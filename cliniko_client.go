@@ -10,6 +10,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"strings"
@@ -258,6 +259,23 @@ func (c *ClinikoClient) CreateAttachment(
 
 	if err != nil {
 		return nil, nil, nil, err
+	}
+
+	if fmt.Sprintf("%d", rsp.StatusCode) !=
+		string(*presignedUrl.JSON200.Fields.SuccessActionStatus) {
+
+		body, err := ioutil.ReadAll(rsp.Body)
+		if err != nil {
+			return nil, nil, nil, err
+		}
+
+		return nil, nil, nil,
+			fmt.Errorf(
+				"status code of s3 response not correct: %d, expected %s, response body: %s",
+				rsp.StatusCode,
+				*presignedUrl.JSON200.Fields.SuccessActionStatus,
+				body,
+			)
 	}
 
 	s3Response, err :=
