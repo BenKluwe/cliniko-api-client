@@ -7380,6 +7380,36 @@ type ListTreatmentNotesGetParams struct {
 // ListTreatmentNotesGetParamsOrder defines parameters for ListTreatmentNotesGet.
 type ListTreatmentNotesGetParamsOrder string
 
+type CreateTreatmentNotePostJSONBodyContentSectionAnswerOther struct {
+	Enabled  *bool   `json:"enabled,omitempty"`
+	Selected *bool   `json:"selected,omitempty"`
+	Value    *string `json:"value,omitempty"`
+}
+
+type CreateTreatmentNotePostJSONBodyContentSectionAnswerAnswer struct {
+	Selected *bool   `json:"selected"`
+	Value    *string `json:"value"`
+}
+
+type CreateTreatmentNotePostJSONBodyContentSectionAnswer struct {
+	Answer  *string `json:"answer,omitempty"`
+	Answers *[]CreateTreatmentNotePostJSONBodyContentSectionAnswerAnswer `json:"answers,omitempty"`
+	BodyChartIds *[]string `json:"body_chart_ids,omitempty"`
+	Name         string    `json:"name"`
+	Other        *CreateTreatmentNotePostJSONBodyContentSectionAnswerOther `json:"other,omitempty"`
+	Type *CreateTreatmentNotePostJSONBodyContentSectionsQuestionsType `json:"type"`
+}
+
+type CreateTreatmentNotePostJSONBodyContentSection struct {
+	Description *string `json:"description"`
+	Name        *string `json:"name"`
+	Questions *[]CreateTreatmentNotePostJSONBodyContentSectionAnswer `json:"questions,omitempty"`
+}
+
+type CreateTreatmentNotePostJSONBodyContent struct {
+	Sections *[]CreateTreatmentNotePostJSONBodyContentSection `json:"sections,omitempty"`
+}
+
 // CreateTreatmentNotePostJSONBody defines parameters for CreateTreatmentNotePost.
 type CreateTreatmentNotePostJSONBody struct {
 	// AttendeeId attendee id
@@ -7387,27 +7417,7 @@ type CreateTreatmentNotePostJSONBody struct {
 
 	// BookingId booking id
 	BookingId *string `json:"booking_id,omitempty"`
-	Content   *struct {
-		Sections *[]struct {
-			Description *string `json:"description"`
-			Name        *string `json:"name"`
-			Questions   *[]struct {
-				Answer  *string `json:"answer,omitempty"`
-				Answers *[]struct {
-					Selected *bool   `json:"selected"`
-					Value    *string `json:"value"`
-				} `json:"answers,omitempty"`
-				BodyChartIds *[]string `json:"body_chart_ids,omitempty"`
-				Name         string    `json:"name"`
-				Other        *struct {
-					Enabled  *bool   `json:"enabled,omitempty"`
-					Selected *bool   `json:"selected,omitempty"`
-					Value    *string `json:"value,omitempty"`
-				} `json:"other,omitempty"`
-				Type *CreateTreatmentNotePostJSONBodyContentSectionsQuestionsType `json:"type"`
-			} `json:"questions,omitempty"`
-		} `json:"sections,omitempty"`
-	} `json:"content"`
+	Content   *CreateTreatmentNotePostJSONBodyContent
 	Draft *bool `json:"draft"`
 
 	// PatientId patient id
