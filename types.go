@@ -7417,7 +7417,7 @@ type CreateTreatmentNotePostJSONBody struct {
 
 	// BookingId booking id
 	BookingId *string `json:"booking_id,omitempty"`
-	Content   *CreateTreatmentNotePostJSONBodyContent
+	Content   *CreateTreatmentNotePostJSONBodyContent `json:"content"`
 	Draft *bool `json:"draft"`
 
 	// PatientId patient id
