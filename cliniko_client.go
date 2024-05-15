@@ -64,6 +64,7 @@ func NewClinikoClient(
 	token string,
 	vendor string,
 	vendorEmail string,
+	requestEditors ...RequestEditorFn,
 ) (
 	*ClinikoClient, error,
 ) {
@@ -96,6 +97,7 @@ func NewClinikoClient(
 	}
 
 	client.RequestEditors = append(client.RequestEditors, ret.addClinikoHeaders)
+	client.RequestEditors = append(client.RequestEditors, requestEditors...)
 	return ret, nil
 }
 
