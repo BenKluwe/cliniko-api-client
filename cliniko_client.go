@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -252,6 +253,10 @@ func (c *ClinikoClient) CreateAttachment(
 		return nil, nil, nil, err
 	}
 
+	if presignedUrl.JSON200 == nil {
+		return presignedUrl, nil, nil, errors.New("presigned url request was unsuccessful")
+	}
+
 	rsp, err :=
 		c.UploadFileToS3Bucket(
 			ctx,
@@ -260,7 +265,7 @@ func (c *ClinikoClient) CreateAttachment(
 			fileContent)
 
 	if err != nil {
-		return nil, nil, nil, err
+		return presignedUrl, nil, nil, err
 	}
 
 	if fmt.Sprintf("%d", rsp.StatusCode) !=
@@ -271,7 +276,7 @@ func (c *ClinikoClient) CreateAttachment(
 			return nil, nil, nil, err
 		}
 
-		return nil, nil, nil,
+		return presignedUrl, nil, nil,
 			fmt.Errorf(
 				"status code of s3 response not correct: %d, expected %s, response body: %s",
 				rsp.StatusCode,
@@ -283,7 +288,11 @@ func (c *ClinikoClient) CreateAttachment(
 	s3Response, err :=
 		c.ParseUploadFileToS3BucketResponse(rsp)
 	if err != nil {
-		return nil, nil, nil, err
+		return presignedUrl, nil, nil, err
+	}
+
+	if s3Response.XML201 == nil {
+		return presignedUrl, s3Response, nil, errors.New("s3 request was unsuccessful")
 	}
 
 	uploadUrl := fmt.Sprintf("%s/%s",
@@ -303,7 +312,11 @@ func (c *ClinikoClient) CreateAttachment(
 			reqEditors...)
 
 	if err != nil {
-		return nil, nil, nil, err
+		return presignedUrl, s3Response, nil, err
+	}
+
+	if attachmentPostResponse.JSON201 == nil {
+		return presignedUrl, s3Response, attachmentPostResponse, errors.New("post attachment to cliniko request was unsuccessful")
 	}
 
 	return presignedUrl, s3Response, attachmentPostResponse, nil
