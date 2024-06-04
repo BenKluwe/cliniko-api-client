@@ -6412,6 +6412,8 @@ type ListPatientsGetParams struct {
 	// | old_reference_id | [string](/developer-portal/#string-filter-operators) |
 	// | preferred_first_name | [string](/developer-portal/#string-filter-operators) |
 	Q *[]string `form:"q[],omitempty" json:"q[],omitempty"`
+
+	Search *string `form:"search,omitempty" json:"search,omitempty`
 }
 
 // ListPatientsGetParamsOrder defines parameters for ListPatientsGet.
